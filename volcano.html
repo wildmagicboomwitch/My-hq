@@ -63,13 +63,14 @@ body::before{
 .scale-label{font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;text-align:center;}
 
 /* 5-step scale (7yo) */
-.scale-5{display:flex;gap:8px;justify-content:center;}
+.scale-5{display:flex;gap:6px;justify-content:center;flex-wrap:nowrap;width:100%;}
 .scale-btn-5{
-  flex:1;max-width:80px;
-  background:var(--card);border:3px solid transparent;
-  border-radius:var(--radius);padding:14px 6px;
+  flex:1;
+  background:#1a1838;border:3px solid rgba(255,255,255,0.12);
+  border-radius:var(--radius);padding:12px 4px;
   text-align:center;cursor:pointer;transition:all .2s;
-  font-family:var(--font-main);
+  font-family:var(--font-main);color:var(--text);
+  min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
 .scale-btn-5:hover{transform:scale(1.05);border-color:var(--btn-color,var(--accent));}
 .scale-btn-5.selected{
@@ -86,10 +87,11 @@ body::before{
 .scale-10{display:flex;flex-direction:column;gap:8px;}
 .scale-row-10{display:flex;gap:6px;}
 .scale-btn-10{
-  flex:1;background:var(--card);border:2px solid rgba(255,255,255,.06);
+  flex:1;background:#1a1838;border:2px solid rgba(255,255,255,0.1);
   border-radius:var(--radius-sm);padding:10px 4px;
   text-align:center;cursor:pointer;transition:all .2s;
-  font-family:var(--font-main);
+  font-family:var(--font-main);color:var(--text);
+  min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
 .scale-btn-10:hover{border-color:var(--btn-color,var(--accent));transform:scale(1.04);}
 .scale-btn-10.selected{
@@ -296,7 +298,14 @@ function build5Scale() {
     btn.style.setProperty('--btn-bg',    `rgba(${lvl.rgb},0.15)`);
     btn.dataset.level = lvl.level;
     btn.innerHTML = `<span class="sbtn-emoji">${lvl.emoji}</span><span class="sbtn-label">${lvl.name}</span>`;
-    btn.addEventListener('click', () => selectLevel(lvl, LEVELS_5.length));
+    btn.addEventListener('click', () => {
+      try { selectLevel(lvl, LEVELS_5.length); }
+      catch(e) {
+        document.getElementById('levelName').textContent = 'Error: ' + e.message;
+        document.getElementById('levelDisplay').classList.add('active');
+        console.error(e);
+      }
+    });
     row.appendChild(btn);
   });
 
@@ -327,7 +336,14 @@ function build10Scale() {
       <span class="sbtn10-emoji">${lvl.emoji}</span>
       <span class="sbtn10-label">${lvl.name}</span>
     `;
-    btn.addEventListener('click', () => selectLevel(lvl, LEVELS_10.length));
+    btn.addEventListener('click', () => {
+      try { selectLevel(lvl, LEVELS_10.length); }
+      catch(e) {
+        document.getElementById('levelName').textContent = 'Error: ' + e.message;
+        document.getElementById('levelDisplay').classList.add('active');
+        console.error(e);
+      }
+    });
     (i < 5 ? row1 : row2).appendChild(btn);
   });
 
@@ -462,23 +478,18 @@ function triggerNeedHelp() {
 /* ── INIT ── */
 function init() {
   const session = Auth.getSession();
-  if (!session || !['elder','younger'].includes(session.profileId)) {
-    window.location.href = 'index.html'; return;
-  }
-  profileId  = session.profileId;
+  // Use session profile if valid, otherwise default to simple (7yo) mode
+  profileId  = (session && ['elder','younger'].includes(session.profileId))
+               ? session.profileId : 'elder';
   complexity = profileId === 'elder' ? 'full' : 'simple';
-  Profiles.applyTheme(profileId);
 
-  const profile = Profiles.get(profileId);
+  try { Profiles.applyTheme(profileId); } catch(e) { /* theme failed, use defaults */ }
+
+  const profile = Profiles.get(profileId) || {};
   const mascot  = MYHQ.MASCOTS.find(m => m.id === profile.mascot) || MYHQ.MASCOTS[0];
   document.getElementById('headerMascot').textContent = mascot.emoji;
 
-  // Adjust language slightly for younger
-  if (complexity === 'simple') {
-    document.querySelector('.header-title').textContent = 'How big is this feeling?';
-  } else {
-    document.querySelector('.header-title').textContent = 'How are you feeling right now?';
-  }
+  document.querySelector('.header-title').textContent = 'How big is this feeling?';
 
   // Build appropriate scale
   if (complexity === 'full') {
