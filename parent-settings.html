@@ -5,92 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Settings — Parent HQ</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
-<style id="parent-stub-styles">
+<style id="p-styles">
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--bg:#080c18;--surface:#0d1220;--card:#131929;--border:rgba(255,255,255,0.07);--accent:#64748b;--text:#f1f5f9;--text-muted:#64748b;--radius:18px;--radius-sm:10px;--font-main:'Nunito',sans-serif;--font-disp:'Fredoka One',cursive;}
+:root{--bg:#080c18;--surface:#0d1220;--card:#131929;--card2:#1a2235;--border:rgba(255,255,255,0.07);--accent:#818cf8;--accent2:#34d399;--danger:#f87171;--success:#4ade80;--elder:#e94560;--younger:#c084fc;--text:#f1f5f9;--text-muted:#64748b;--radius:18px;--radius-sm:10px;--font-main:'Nunito',sans-serif;--font-disp:'Fredoka One',cursive;}
 html,body{min-height:100vh;font-family:var(--font-main);background:var(--bg);color:var(--text);overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 50% 30% at 70% 0%,#64748b18 0%,transparent 70%),var(--bg);pointer-events:none;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 50% 30% at 60% 0%,rgba(129,140,248,.08) 0%,transparent 70%),var(--bg);pointer-events:none;}
 #app{position:relative;z-index:1;max-width:640px;margin:0 auto;}
 .topbar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(12px);}
-.back-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text-muted);font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font-main);transition:all .2s;}
+.back-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text-muted);font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font-main);}
 .back-btn:hover{color:var(--text);border-color:var(--accent);}
 .topbar-title{font-family:var(--font-disp);font-size:20px;color:var(--accent);flex:1;}
-.page{padding:20px 16px 100px;display:flex;flex-direction:column;gap:14px;}
-/* STUB SECTION CARDS */
-.stub-hero{background:var(--card);border:2px solid #64748b33;border-radius:var(--radius);padding:24px;text-align:center;}
-.stub-emoji{font-size:56px;display:block;margin-bottom:12px;}
-.stub-title{font-family:var(--font-disp);font-size:26px;color:var(--accent);margin-bottom:6px;}
-.stub-sub{font-size:13px;color:var(--text-muted);font-weight:600;line-height:1.5;}
-.stub-badge{display:inline-block;margin-top:12px;background:#64748b22;border:1px solid #64748b44;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:800;color:var(--accent);}
-.section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:flex-start;gap:14px;transition:all .2s;cursor:default;}
-.section-card:hover{border-color:var(--accent);}
-.section-card-emoji{font-size:28px;flex-shrink:0;margin-top:2px;}
-.section-card-body{flex:1;}
-.section-card-title{font-size:15px;font-weight:900;margin-bottom:4px;}
-.section-card-sub{font-size:13px;color:var(--text-muted);font-weight:600;line-height:1.4;}
-.section-card-stub{display:inline-block;margin-top:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:800;color:var(--text-muted);}
-/* NAV */
+.page{padding:16px 16px 100px;display:flex;flex-direction:column;gap:18px;}
+/* SECTIONS */
+.section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.section-title{font-family:var(--font-disp);font-size:18px;color:var(--accent);margin-bottom:14px;}
+.section-sub{font-size:13px;font-weight:700;color:var(--text-muted);margin-top:-10px;margin-bottom:14px;line-height:1.5;}
+/* PROFILE CARDS */
+.profile-split{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.prof-card{background:var(--card2);border:2px solid var(--border);border-radius:var(--radius-sm);padding:14px;transition:border-color .2s;}
+.prof-card.elder{border-color:rgba(233,69,96,.15);} .prof-card.younger{border-color:rgba(192,132,252,.15);}
+.prof-name{font-size:14px;font-weight:900;margin-bottom:10px;}
+.prof-name.elder{color:var(--elder);} .prof-name.younger{color:var(--younger);}
+/* FORM ELEMENTS */
+.f-row{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.f-label{font-size:11px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;}
+.f-input,.f-select{width:100%;background:rgba(255,255,255,.04);border:2px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:15px;color:var(--text);font-family:var(--font-main);outline:none;transition:border-color .2s;}
+.f-input:focus,.f-select:focus{border-color:var(--accent);} .f-select option{background:var(--surface);}
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-label{font-size:13px;font-weight:700;flex:1;}
+.toggle-sub{font-size:11px;font-weight:600;color:var(--text-muted);margin-top:1px;}
+.toggle-info{flex:1;}
+.toggle-sw{width:40px;height:22px;background:rgba(255,255,255,.1);border-radius:20px;position:relative;cursor:pointer;flex-shrink:0;}
+.toggle-sw.on{background:var(--accent);}
+.toggle-sw::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;}
+.toggle-sw.on::after{transform:translateX(18px);}
+/* SAVE BTN */
+.save-btn{width:100%;background:var(--accent);border:none;border-radius:var(--radius-sm);padding:14px;font-size:16px;font-weight:900;color:#fff;cursor:pointer;font-family:var(--font-main);transition:all .2s;}
+.save-btn:hover{transform:translateY(-1px);}
+/* STEP LIST */
+.step-list{display:flex;flex-direction:column;gap:8px;}
+.step-item{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.step-drag{color:var(--text-muted);cursor:grab;font-size:16px;flex-shrink:0;}
+.step-emoji{font-size:22px;flex-shrink:0;}
+.step-name{font-size:14px;font-weight:800;flex:1;}
+.step-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.06);color:var(--text-muted);}
+.step-del{background:none;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:4px;transition:color .2s;}
+.step-del:hover{color:var(--danger);}
+/* CHART */
+.chart-bar-wrap{display:flex;align-items:center;gap:10px;margin:6px 0;}
+.chart-label{font-size:12px;font-weight:800;width:64px;flex-shrink:0;color:var(--text-muted);}
+.chart-bar-bg{flex:1;background:rgba(255,255,255,.06);border-radius:20px;height:10px;overflow:hidden;}
+.chart-bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s ease;}
+.chart-val{font-size:12px;font-weight:900;color:var(--accent);width:32px;text-align:right;flex-shrink:0;}
+/* SCORE PILL */
+.score-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;}
+.sp-emoji{font-size:22px;} .sp-info{flex:1;} .sp-label{font-size:13px;font-weight:800;} .sp-sub{font-size:11px;color:var(--text-muted);}
+.sp-val{font-family:var(--font-disp);font-size:22px;color:var(--accent);}
+/* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:640px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:90;padding:8px 0 max(8px,env(safe-area-inset-bottom));}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;text-decoration:none;color:var(--text-muted);border:none;background:none;font-family:var(--font-main);transition:color .2s;}
 .bnav-item .bn-emoji{font-size:20px;}.bnav-item .bn-label{font-size:9px;font-weight:800;text-transform:uppercase;}
 .bnav-item.active{color:var(--accent);}
+#tw{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;width:90%;max-width:400px;pointer-events:none;}
+@keyframes tIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tOut{from{opacity:1}to{opacity:0;transform:translateY(8px)}}
 </style>
 </head>
 <body>
 <div id="app">
 <div class="topbar">
-  <button class="back-btn" onclick="window.location.href='parent.html'">← Parent HQ</button>
+  <button class="back-btn" onclick="location.href='parent.html'">← Parent HQ</button>
   <div class="topbar-title">⚙️ Settings</div>
 </div>
 <main class="page">
 
-  <div class="stub-hero">
-    <span class="stub-emoji">⚙️</span>
-    <div class="stub-title">Settings</div>
-    <div class="stub-sub">This section is being built.<br>Structure and navigation are in place — functionality coming next.</div>
-    <div class="stub-badge">🚧 In Progress</div>
-  </div>
-
-  <div class="section-card">
-    <div class="section-card-emoji">🔔</div>
-    <div class="section-card-body">
-      <div class="section-card-title">Notification Manager</div>
-      <div class="section-card-sub">What sends push alerts and when</div>
-      <div class="section-card-stub">Coming soon</div>
+    <div class="section">
+      <div class="section-title">Push Notifications 🔔</div>
+      <div class="section-sub">What sends a push notification to your device</div>
+      <div id="notifToggles"></div>
+      <button class="save-btn" id="saveNotifs" style="margin-top:14px">Save Notification Settings</button>
     </div>
-  </div>
-  <div class="section-card">
-    <div class="section-card-emoji">✨</div>
-    <div class="section-card-body">
-      <div class="section-card-title">Feeling Before/After Prompts</div>
-      <div class="section-card-sub">Which activities trigger check prompts</div>
-      <div class="section-card-stub">Coming soon</div>
+    <div class="section">
+      <div class="section-title">Before &amp; After Prompts ✨</div>
+      <div class="section-sub">Which activities automatically prompt a mood check before and after</div>
+      <div id="baToggles"></div>
     </div>
-  </div>
-  <div class="section-card">
-    <div class="section-card-emoji">🏠</div>
-    <div class="section-card-body">
-      <div class="section-card-title">Family Space</div>
-      <div class="section-card-sub">Shared bulletin board and win wall config</div>
-      <div class="section-card-stub">Coming soon</div>
+    <div class="section">
+      <div class="section-title">Family Space 🏠</div>
+      <div class="section-sub">Control what appears in the shared family area</div>
+      <div id="familyToggles"></div>
     </div>
-  </div>
-  <div class="section-card">
-    <div class="section-card-emoji">📚</div>
-    <div class="section-card-body">
-      <div class="section-card-title">School Setup</div>
-      <div class="section-card-sub">Subjects, teachers, homework reminders</div>
-      <div class="section-card-stub">Coming soon</div>
+    <div class="section">
+      <div class="section-title">Parent PINs 🔐</div>
+      <div class="section-sub">Change your parent PINs. Both current PINs required to change either.</div>
+      <div class="f-row"><div class="f-label">Current Parent A PIN</div><input type="number" class="f-input" id="curPinA" placeholder="••••" maxlength="4"></div>
+      <div class="f-row"><div class="f-label">Current Parent B PIN</div><input type="number" class="f-input" id="curPinB" placeholder="••••" maxlength="4"></div>
+      <div class="f-row"><div class="f-label">New PIN (leave blank to keep)</div><input type="number" class="f-input" id="newPinA" placeholder="New Parent A PIN" maxlength="4"></div>
+      <button class="save-btn" id="savePinsBtn">Update PINs 🔐</button>
     </div>
-  </div>
-  <div class="section-card">
-    <div class="section-card-emoji">🧹</div>
-    <div class="section-card-body">
-      <div class="section-card-title">Deep Clean Config</div>
-      <div class="section-card-sub">Room cleaning guide settings</div>
-      <div class="section-card-stub">Coming soon</div>
-    </div>
-  </div>
 
 </main>
 <nav class="bottom-nav">
@@ -98,8 +112,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;background:radial-gradi
   <a class="bnav-item" href="parent-alerts.html"><span class="bn-emoji">🔔</span><span class="bn-label">Alerts</span></a>
   <a class="bnav-item" href="parent-chores.html"><span class="bn-emoji">✅</span><span class="bn-label">Chores</span></a>
   <a class="bnav-item" href="parent-rewards.html"><span class="bn-emoji">⭐</span><span class="bn-label">Rewards</span></a>
-  <a class="bnav-item" href="parent-settings.html"><span class="bn-emoji">⚙️</span><span class="bn-label">Settings</span></a>
+  <a class="bnav-item active" href="parent-settings.html"><span class="bn-emoji">⚙️</span><span class="bn-label">Settings</span></a>
 </nav>
+<div id="tw"></div>
 </div>
 <script>
 
@@ -748,13 +763,66 @@ window.RewardStore = RewardStore;
 window.ThoughtJar  = ThoughtJar;
 
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const session = Auth.getSession();
-  if (!session || session.profileId !== 'parent') {
-    window.location.href = 'parent.html';
-  }
-});
+<script id="p-script">
+
+const NOTIF_SETTINGS=[
+  {key:'volcano_high',label:'Volcano danger zone hit',sub:'Levels 3-5 (7yo) or 7-10 (10yo)',default:true},
+  {key:'bully_flag',label:'Bully/hurt feelings flag',sub:'From Reset Toolkit stage 5',default:true},
+  {key:'needs_help',label:'"I need help right now" tapped',sub:'Highest priority alert',default:true},
+  {key:'checkin_distress',label:'Hard check-in flagged',sub:'Low mood + energy at check-in',default:false},
+  {key:'reward_request',label:'Reward requested',sub:'When a girl requests a reward',default:true},
+  {key:'reset_complete',label:'Reset Toolkit completed',sub:'Optional celebratory notice',default:false},
+  {key:'sensory_flag',label:'Sensory flag raised',sub:'From body check scan',default:false},
+];
+const BA_ACTIVITIES=[
+  {key:'homework',label:'Homework'},
+  {key:'screen',label:'Screen time'},
+  {key:'chores',label:'Chore completion'},
+  {key:'bedtime',label:'Bedtime routine start'},
+  {key:'outside',label:'Going outside'},
+  {key:'exercise',label:'Exercise'},
+];
+const FAMILY_TOGGLES=[
+  {key:'share_wins',label:'Girls can share wins to Family Wall',default:true},
+  {key:'show_chores',label:'Chore progress visible in Family Space',default:true},
+  {key:'sister_notes',label:'Sister notes (always girls-only)',default:true,locked:true},
+];
+function toast(m,t='info'){const c=document.getElementById('tw');const el=document.createElement('div');el.style.cssText=`background:var(--card);color:var(--text);border:2px solid ${t==='success'?'#4ade80':'#818cf8'};border-radius:12px;padding:12px 18px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;pointer-events:all;animation:tIn .3s ease;width:100%;font-family:var(--font-main);`;el.innerHTML=`<span>${t==='success'?'✅':'⚙️'}</span><span>${m}</span>`;c.appendChild(el);setTimeout(()=>{el.style.animation='tOut .3s ease forwards';setTimeout(()=>el.remove(),300);},3000);}
+function getSettings(){return Store.get('parent-notification-settings',{});}
+function buildToggles(containerId, items, storageKey){
+  const saved=Store.get(storageKey,{});
+  const el=document.getElementById(containerId);el.innerHTML='';
+  items.forEach(item=>{
+    const val=saved[item.key]??item.default??false;
+    const row=document.createElement('div');row.className='toggle-row';
+    row.innerHTML=`<div class="toggle-info"><div class="toggle-label">${item.label}</div><div class="toggle-sub">${item.sub||''}</div></div><div class="toggle-sw${val?' on':''}${item.locked?' locked':''}" data-key="${item.key}" style="${item.locked?'opacity:.4;pointer-events:none':''}"></div>`;
+    if(!item.locked)row.querySelector('.toggle-sw').onclick=function(){this.classList.toggle('on');};
+    el.appendChild(row);
+  });
+}
+function saveToggles(containerId, storageKey){
+  const vals={};document.getElementById(containerId).querySelectorAll('.toggle-sw[data-key]').forEach(sw=>{vals[sw.dataset.key]=sw.classList.contains('on');});
+  Store.set(storageKey,vals);toast('Saved! ✅','success');
+}
+document.getElementById('saveNotifs').onclick=()=>saveToggles('notifToggles','parent-notification-settings');
+document.getElementById('savePinsBtn').onclick=()=>{
+  const ca=document.getElementById('curPinA').value;
+  const cb=document.getElementById('curPinB').value;
+  if(!Auth.verifyBothParentPins(ca,cb)){toast('Current PINs incorrect','error');return;}
+  const na=document.getElementById('newPinA').value;
+  if(na&&na.length===4){Auth.setPin('parent-a',na);toast('PIN A updated! 🔐','success');}
+  else toast('PIN unchanged (leave blank to keep)','info');
+};
+function init(){
+  const s=Auth.getSession();if(!s||s.profileId!=='parent'){location.href='parent.html';return;}
+  buildToggles('notifToggles',NOTIF_SETTINGS,'parent-notification-settings');
+  buildToggles('baToggles',BA_ACTIVITIES,'parent-ba-settings');
+  buildToggles('familyToggles',FAMILY_TOGGLES,'parent-family-settings');
+  document.querySelectorAll('#baToggles .toggle-sw[data-key]').forEach(sw=>sw.onclick=function(){this.classList.toggle('on');Store.set('parent-ba-settings',{...Store.get('parent-ba-settings',{}),[sw.dataset.key]:sw.classList.contains('on')});});
+  document.querySelectorAll('#familyToggles .toggle-sw[data-key]').forEach(sw=>sw.onclick=function(){this.classList.toggle('on');Store.set('parent-family-settings',{...Store.get('parent-family-settings',{}),[sw.dataset.key]:sw.classList.contains('on')});});
+}
+document.addEventListener('DOMContentLoaded',init);
+
 </script>
 </body>
 </html>

@@ -5,85 +5,117 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Rewards — Parent HQ</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
-<style id="parent-stub-styles">
+<style id="p-styles">
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--bg:#080c18;--surface:#0d1220;--card:#131929;--border:rgba(255,255,255,0.07);--accent:#fbbf24;--text:#f1f5f9;--text-muted:#64748b;--radius:18px;--radius-sm:10px;--font-main:'Nunito',sans-serif;--font-disp:'Fredoka One',cursive;}
+:root{--bg:#080c18;--surface:#0d1220;--card:#131929;--card2:#1a2235;--border:rgba(255,255,255,0.07);--accent:#fbbf24;--accent2:#34d399;--danger:#f87171;--success:#4ade80;--elder:#e94560;--younger:#c084fc;--text:#f1f5f9;--text-muted:#64748b;--radius:18px;--radius-sm:10px;--font-main:'Nunito',sans-serif;--font-disp:'Fredoka One',cursive;}
 html,body{min-height:100vh;font-family:var(--font-main);background:var(--bg);color:var(--text);overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 50% 30% at 70% 0%,#fbbf2418 0%,transparent 70%),var(--bg);pointer-events:none;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 50% 30% at 60% 0%,rgba(251,191,36,.08) 0%,transparent 70%),var(--bg);pointer-events:none;}
 #app{position:relative;z-index:1;max-width:640px;margin:0 auto;}
 .topbar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(12px);}
-.back-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text-muted);font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font-main);transition:all .2s;}
+.back-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text-muted);font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font-main);}
 .back-btn:hover{color:var(--text);border-color:var(--accent);}
 .topbar-title{font-family:var(--font-disp);font-size:20px;color:var(--accent);flex:1;}
-.page{padding:20px 16px 100px;display:flex;flex-direction:column;gap:14px;}
-/* STUB SECTION CARDS */
-.stub-hero{background:var(--card);border:2px solid #fbbf2433;border-radius:var(--radius);padding:24px;text-align:center;}
-.stub-emoji{font-size:56px;display:block;margin-bottom:12px;}
-.stub-title{font-family:var(--font-disp);font-size:26px;color:var(--accent);margin-bottom:6px;}
-.stub-sub{font-size:13px;color:var(--text-muted);font-weight:600;line-height:1.5;}
-.stub-badge{display:inline-block;margin-top:12px;background:#fbbf2422;border:1px solid #fbbf2444;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:800;color:var(--accent);}
-.section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:flex-start;gap:14px;transition:all .2s;cursor:default;}
-.section-card:hover{border-color:var(--accent);}
-.section-card-emoji{font-size:28px;flex-shrink:0;margin-top:2px;}
-.section-card-body{flex:1;}
-.section-card-title{font-size:15px;font-weight:900;margin-bottom:4px;}
-.section-card-sub{font-size:13px;color:var(--text-muted);font-weight:600;line-height:1.4;}
-.section-card-stub{display:inline-block;margin-top:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:800;color:var(--text-muted);}
-/* NAV */
+.add-btn{background:var(--accent);border:none;border-radius:var(--radius-sm);padding:8px 16px;color:#431407;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--font-main);}
+.page{padding:16px 16px 100px;display:flex;flex-direction:column;gap:18px;}
+.tabs{display:flex;background:var(--card);border-radius:var(--radius-sm);padding:4px;gap:4px;}
+.tab{flex:1;background:transparent;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:800;color:var(--text-muted);cursor:pointer;font-family:var(--font-main);transition:all .2s;}
+.tab.active{background:var(--accent);color:#431407;}
+.points-row{display:flex;gap:10px;}
+.points-card{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;}
+.pc-num{font-family:var(--font-disp);font-size:28px;} .pc-num.elder{color:var(--elder);} .pc-num.younger{color:var(--younger);}
+.pc-label{font-size:10px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-top:2px;}
+.add-form{background:var(--card);border:2px solid rgba(251,191,36,.2);border-radius:var(--radius);padding:18px;display:none;}
+.add-form.open{display:block;}
+.form-title{font-family:var(--font-disp);font-size:18px;color:var(--accent);margin-bottom:14px;}
+.f-row{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.f-row.two{flex-direction:row;gap:10px;} .f-row.two>*{flex:1;}
+.f-label{font-size:11px;font-weight:900;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;}
+.f-input,.f-select{width:100%;background:rgba(255,255,255,.04);border:2px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:15px;color:var(--text);font-family:var(--font-main);outline:none;transition:border-color .2s;}
+.f-input:focus,.f-select:focus{border-color:var(--accent);} .f-select option{background:var(--surface);}
+.emoji-strip{display:flex;flex-wrap:wrap;gap:6px;}
+.e-btn{background:rgba(255,255,255,.05);border:2px solid transparent;border-radius:8px;padding:6px 8px;font-size:20px;cursor:pointer;transition:all .2s;}
+.e-btn:hover,.e-btn.sel{border-color:var(--accent);background:rgba(251,191,36,.1);}
+.form-btns{display:flex;gap:10px;margin-top:12px;}
+.btn-save{flex:1;background:var(--accent);border:none;border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:900;color:#431407;cursor:pointer;font-family:var(--font-main);}
+.btn-cancel{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 18px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;font-family:var(--font-main);}
+.section-title{font-family:var(--font-disp);font-size:17px;}
+/* Reward cards */
+.rewards-list,.pending-list,.points-log{display:flex;flex-direction:column;gap:10px;}
+.reward-card,.pend-card,.log-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.pend-card{border-color:rgba(251,191,36,.2);}
+.rc-emoji,.pend-emoji,.log-icon{font-size:26px;flex-shrink:0;}
+.rc-info,.pend-info,.log-info{flex:1;}
+.rc-name,.pend-name,.log-label{font-size:14px;font-weight:800;margin-bottom:3px;}
+.rc-meta,.pend-who{display:flex;gap:6px;flex-wrap:wrap;}
+.rc-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.06);color:var(--text-muted);}
+.rc-cost{color:var(--accent);}
+.pend-who{font-size:12px;font-weight:700;}
+.pend-who.elder{color:var(--elder);} .pend-who.younger{color:var(--younger);}
+.log-sub{font-size:11px;color:var(--text-muted);}
+.log-who{font-size:11px;font-weight:800;flex-shrink:0;}
+.log-who.elder{color:var(--elder);} .log-who.younger{color:var(--younger);}
+.log-pts{font-size:13px;font-weight:900;flex-shrink:0;}
+.log-pts.earned{color:var(--success);} .log-pts.spent{color:var(--danger);}
+.rc-actions,.pend-actions{display:flex;gap:6px;flex-shrink:0;}
+.rc-btn,.approve-btn,.deny-btn{border-radius:8px;padding:7px 12px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font-main);transition:all .2s;}
+.rc-btn{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-muted);}
+.rc-btn.del:hover{border-color:var(--danger);color:var(--danger);}
+.approve-btn{background:var(--success);border:none;color:#052e16;font-weight:900;}
+.approve-btn:hover{transform:scale(1.04);}
+.deny-btn{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:var(--danger);}
+.empty-state{text-align:center;padding:28px;color:var(--text-muted);font-size:13px;font-weight:700;}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:640px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:90;padding:8px 0 max(8px,env(safe-area-inset-bottom));}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;text-decoration:none;color:var(--text-muted);border:none;background:none;font-family:var(--font-main);transition:color .2s;}
 .bnav-item .bn-emoji{font-size:20px;}.bnav-item .bn-label{font-size:9px;font-weight:800;text-transform:uppercase;}
 .bnav-item.active{color:var(--accent);}
+#tw{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;width:90%;max-width:400px;pointer-events:none;}
+@keyframes tIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tOut{from{opacity:1}to{opacity:0;transform:translateY(8px)}}
 </style>
 </head>
 <body>
 <div id="app">
 <div class="topbar">
-  <button class="back-btn" onclick="window.location.href='parent.html'">← Parent HQ</button>
+  <button class="back-btn" onclick="location.href='parent.html'">← Parent HQ</button>
   <div class="topbar-title">⭐ Rewards</div>
+  <button class="add-btn" id="addBtn">+ Add</button>
 </div>
 <main class="page">
-
-  <div class="stub-hero">
-    <span class="stub-emoji">⭐</span>
-    <div class="stub-title">Rewards</div>
-    <div class="stub-sub">This section is being built.<br>Structure and navigation are in place — functionality coming next.</div>
-    <div class="stub-badge">🚧 In Progress</div>
+  <div class="tabs">
+    <button class="tab active" data-tab="pending">⏳ Pending</button>
+    <button class="tab" data-tab="store">🛍️ Store</button>
+    <button class="tab" data-tab="ledger">📊 Stars</button>
   </div>
-
-  <div class="section-card">
-    <div class="section-card-emoji">⭐</div>
-    <div class="section-card-body">
-      <div class="section-card-title">Reward Store</div>
-      <div class="section-card-sub">Define what kids can spend stars on</div>
-      <div class="section-card-stub">Coming soon</div>
+  <div class="points-row">
+    <div class="points-card"><div class="pc-num elder" id="ebal">0</div><div class="pc-label" id="ename">Older</div></div>
+    <div class="points-card"><div class="pc-num younger" id="ybal">0</div><div class="pc-label" id="yname">Younger</div></div>
+  </div>
+  <div class="add-form" id="addForm">
+    <div class="form-title">Add Reward ⭐</div>
+    <div class="f-row"><div class="f-label">Emoji</div><div class="emoji-strip" id="emojiStrip"></div></div>
+    <div class="f-row"><div class="f-label">Name</div><input class="f-input" id="rName" placeholder="e.g. 30 min extra screen time" maxlength="50"></div>
+    <div class="f-row two">
+      <div><div class="f-label">Stars</div><input type="number" class="f-input" id="rCost" value="20" min="1" max="999"></div>
+      <div><div class="f-label">For</div><select class="f-select" id="rWho"><option value="both">Both</option><option value="elder">Older only</option><option value="younger">Younger only</option></select></div>
+    </div>
+    <div class="f-row"><div class="f-label">Description</div><input class="f-input" id="rDesc" placeholder="Optional..." maxlength="60"></div>
+    <div class="form-btns">
+      <button class="btn-save" id="saveBtn">Save ⭐</button>
+      <button class="btn-cancel" id="cancelBtn">Cancel</button>
     </div>
   </div>
-  <div class="section-card">
-    <div class="section-card-emoji">✅</div>
-    <div class="section-card-body">
-      <div class="section-card-title">Pending Approvals</div>
-      <div class="section-card-sub">Redemption requests waiting for your OK</div>
-      <div class="section-card-stub">Coming soon</div>
-    </div>
-  </div>
-  <div class="section-card">
-    <div class="section-card-emoji">📊</div>
-    <div class="section-card-body">
-      <div class="section-card-title">Points Ledger</div>
-      <div class="section-card-sub">Full star history for both girls</div>
-      <div class="section-card-stub">Coming soon</div>
-    </div>
-  </div>
-
+  <div id="tabPending"><div class="section-title">Awaiting approval</div><div class="pending-list" id="pendingList"></div></div>
+  <div id="tabStore" style="display:none"><div class="section-title">Reward Store</div><div class="rewards-list" id="rewardsList"></div></div>
+  <div id="tabLedger" style="display:none"><div class="section-title">Star History</div><div class="points-log" id="pointsLog"></div></div>
 </main>
 <nav class="bottom-nav">
   <a class="bnav-item" href="parent.html"><span class="bn-emoji">🏠</span><span class="bn-label">Home</span></a>
   <a class="bnav-item" href="parent-alerts.html"><span class="bn-emoji">🔔</span><span class="bn-label">Alerts</span></a>
   <a class="bnav-item" href="parent-chores.html"><span class="bn-emoji">✅</span><span class="bn-label">Chores</span></a>
-  <a class="bnav-item" href="parent-rewards.html"><span class="bn-emoji">⭐</span><span class="bn-label">Rewards</span></a>
+  <button class="bnav-item active"><span class="bn-emoji">⭐</span><span class="bn-label">Rewards</span></button>
   <a class="bnav-item" href="parent-settings.html"><span class="bn-emoji">⚙️</span><span class="bn-label">Settings</span></a>
 </nav>
+<div id="tw"></div>
 </div>
 <script>
 
@@ -733,12 +765,94 @@ window.ThoughtJar  = ThoughtJar;
 
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const session = Auth.getSession();
-  if (!session || session.profileId !== 'parent') {
-    window.location.href = 'parent.html';
-  }
-});
+let selEmoji='⭐';
+const EMOJIS=['⭐','📱','📺','🌙','🎬','🍕','🍦','👧','😎','🎨','📚','🎮','🎡','🎁','🛍️','🚗','🏖️','🌈','🎪','🍰'];
+const DEFAULT_REWARDS=[
+  {id:'screen-30',emoji:'📱',name:'30 min extra screen time',cost:20,who:'both',desc:''},
+  {id:'screen-60',emoji:'📺',name:'1 hour extra screen time',cost:35,who:'both',desc:''},
+  {id:'stay-up',emoji:'🌙',name:'Stay up 30 min later',cost:25,who:'both',desc:''},
+  {id:'movie',emoji:'🎬',name:'Movie night pick',cost:30,who:'both',desc:''},
+  {id:'dinner',emoji:'🍕',name:'Choose dinner',cost:40,who:'both',desc:''},
+  {id:'ice-cream',emoji:'🍦',name:'Ice cream trip',cost:50,who:'both',desc:''},
+];
+function toast(msg,type='info'){const c=document.getElementById('tw');const t=document.createElement('div');t.style.cssText=`background:var(--card);color:var(--text);border:2px solid ${type==='success'?'#4ade80':type==='error'?'#f87171':'#fbbf24'};border-radius:12px;padding:12px 18px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;pointer-events:all;animation:tIn .3s ease;width:100%;font-family:var(--font-main);`;t.innerHTML=`<span>${type==='success'?'✅':type==='error'?'❌':'⭐'}</span><span>${msg}</span>`;c.appendChild(t);setTimeout(()=>{t.style.animation='tOut .3s ease forwards';setTimeout(()=>t.remove(),300);},3000);}
+function gr(){return Store.get('reward-store',DEFAULT_REWARDS);}
+function sr(r){Store.set('reward-store',r);}
+function loadProfiles(){['elder','younger'].forEach(pid=>{const p=Profiles.get(pid),sfx=pid==='elder'?'e':'y';document.getElementById(sfx+'bal').textContent=Points.getBalance(pid);document.getElementById(sfx+'name').textContent=p.displayName||(pid==='elder'?'Older':'Younger');});}
+function buildEmojis(){const s=document.getElementById('emojiStrip');s.innerHTML='';EMOJIS.forEach(e=>{const b=document.createElement('button');b.className=`e-btn${e===selEmoji?' sel':''}`;b.textContent=e;b.onclick=()=>{s.querySelectorAll('.e-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');selEmoji=e;};s.appendChild(b);});}
+function renderPending(){
+  const list=document.getElementById('pendingList');list.innerHTML='';
+  const all=[];
+  ['elder','younger'].forEach(pid=>{const pname=Profiles.get(pid)?.displayName||(pid==='elder'?'Older':'Younger');Store.getProfile(pid,'redemptions',[]).filter(r=>r.status==='pending').forEach(r=>all.push({...r,pid,pname}));});
+  all.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  if(!all.length){list.innerHTML='<div class="empty-state">No pending requests 🎉</div>';return;}
+  all.forEach(r=>{
+    const d=new Date(r.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const card=document.createElement('div');card.className='pend-card';
+    card.innerHTML=`<span class="pend-emoji">${r.emoji||'⭐'}</span><div class="pend-info"><div class="pend-name">${r.name}</div><div class="pend-who ${r.pid}">${r.pname} · ${r.cost}⭐ · ${d}</div></div><div class="pend-actions"><button class="approve-btn">✅ Approve</button><button class="deny-btn">Deny</button></div>`;
+    card.querySelector('.approve-btn').onclick=()=>{
+      const redemptions=Store.getProfile(r.pid,'redemptions',[]);
+      const idx=redemptions.findIndex(x=>x.id==r.id);
+      if(idx>=0){redemptions[idx].status='approved';Store.setProfile(r.pid,'redemptions',redemptions);Points.spend(r.pid,r.cost,`Reward: ${r.name}`);}
+      toast(`Approved: ${r.name} ✅`,'success');loadProfiles();renderPending();
+    };
+    card.querySelector('.deny-btn').onclick=()=>{
+      const redemptions=Store.getProfile(r.pid,'redemptions',[]);
+      const idx=redemptions.findIndex(x=>x.id==r.id);
+      if(idx>=0){redemptions[idx].status='denied';Store.setProfile(r.pid,'redemptions',redemptions);}
+      toast('Denied — stars refunded','info');renderPending();
+    };
+    list.appendChild(card);
+  });
+}
+function renderStore(){
+  const list=document.getElementById('rewardsList');list.innerHTML='';
+  const rewards=gr();
+  if(!rewards.length){list.innerHTML='<div class="empty-state">No rewards yet</div>';return;}
+  rewards.forEach(r=>{
+    const whoLabel=r.who==='elder'?'Older only':r.who==='younger'?'Younger only':'Both';
+    const card=document.createElement('div');card.className='reward-card';
+    card.innerHTML=`<span class="rc-emoji">${r.emoji}</span><div class="rc-info"><div class="rc-name">${r.name}</div><div class="rc-meta"><span class="rc-tag rc-cost">${r.cost}⭐</span><span class="rc-tag">${whoLabel}</span>${r.desc?`<span class="rc-tag">${r.desc}</span>`:''}</div></div><div class="rc-actions"><button class="rc-btn del">🗑</button></div>`;
+    card.querySelector('.del').onclick=()=>{sr(gr().filter(x=>x.id!==r.id));toast('Removed','info');renderStore();};
+    list.appendChild(card);
+  });
+}
+function renderLedger(){
+  const log=document.getElementById('pointsLog');log.innerHTML='';
+  const all=[];
+  const pn={elder:Profiles.get('elder')?.displayName||'Older',younger:Profiles.get('younger')?.displayName||'Younger'};
+  ['elder','younger'].forEach(pid=>Points.getHistory(pid).slice(0,30).forEach(h=>all.push({...h,pid})));
+  all.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  if(!all.length){log.innerHTML='<div class="empty-state">No history yet</div>';return;}
+  all.slice(0,60).forEach(h=>{
+    const d=new Date(h.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const el=document.createElement('div');el.className='log-item';
+    el.innerHTML=`<span class="log-icon">${h.type==='earned'?'⭐':'🛍️'}</span><div class="log-info"><div class="log-label">${h.label||'Stars'}</div><div class="log-sub">${d}</div></div><span class="log-who ${h.pid}">${pn[h.pid]}</span><span class="log-pts ${h.type}">${h.type==='earned'?'+':'-'}${h.amount}⭐</span>`;
+    log.appendChild(el);
+  });
+}
+function saveReward(){
+  const name=document.getElementById('rName').value.trim();if(!name){toast('Add a name!','error');return;}
+  const r={id:`reward-${Date.now()}`,emoji:selEmoji,name,cost:parseInt(document.getElementById('rCost').value)||20,who:document.getElementById('rWho').value,desc:document.getElementById('rDesc').value.trim()};
+  const all=gr();all.unshift(r);sr(all);
+  toast('Reward added! ⭐','success');document.getElementById('addForm').classList.remove('open');renderStore();
+}
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  document.getElementById('tabPending').style.display=tab==='pending'?'':'none';
+  document.getElementById('tabStore').style.display=tab==='store'?'':'none';
+  document.getElementById('tabLedger').style.display=tab==='ledger'?'':'none';
+  if(tab==='store')renderStore();if(tab==='ledger')renderLedger();
+}
+function init(){
+  const s=Auth.getSession();if(!s||s.profileId!=='parent'){location.href='parent.html';return;}
+  loadProfiles();renderPending();
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+  document.getElementById('addBtn').onclick=()=>{buildEmojis();document.getElementById('addForm').classList.toggle('open');};
+  document.getElementById('saveBtn').onclick=saveReward;
+  document.getElementById('cancelBtn').onclick=()=>document.getElementById('addForm').classList.remove('open');
+}
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>

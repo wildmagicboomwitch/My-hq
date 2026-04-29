@@ -1079,8 +1079,6 @@ html, body {
   .dash-grid { grid-template-columns: 1fr; }
 }
 
-</style>
-
 /* ============================================================
    THEME EDITOR
 ============================================================ */
@@ -1439,7 +1437,7 @@ html, body {
 }
 .theme-sheet-footer .btn { flex: 1; max-width: 100%; padding: 14px; font-size: 15px; }
 
-<!-- END STYLES -->
+</style>
 
 </head>
 <body>
@@ -1546,12 +1544,21 @@ html, body {
         <button class="btn btn-primary" id="setupNameNext">Next →</button>
       </div>
       <div class="setup-step" id="setupStep2">
+        <div class="setup-heading">When's your birthday? 🎂</div>
+        <div class="setup-sub">Used to personalise your experience</div>
+        <input type="date" class="setup-input" id="setupBirthdayInput"
+          autocomplete="off" style="text-align:center;font-size:18px;padding:14px;">
+        <div class="setup-sub hint" style="font-size:12px">This stays on your device only</div>
+        <button class="btn btn-primary" id="setupBirthdayNext">Next →</button>
+        <button class="btn btn-secondary" id="setupBirthdaySkip">Skip</button>
+      </div>
+      <div class="setup-step" id="setupStep3">
         <div class="setup-heading">Pick your buddy! 🐾</div>
         <div class="setup-sub">This little friend lives on your home screen</div>
         <div class="mascot-grid" id="mascotGrid"></div>
         <button class="btn btn-primary" id="setupMascotNext">Next →</button>
       </div>
-      <div class="setup-step" id="setupStep3">
+      <div class="setup-step" id="setupStep4">
         <div class="setup-heading">Pick your colors! 🎨</div>
         <div class="setup-sub">You can always change this later</div>
         <div class="theme-grid" id="themeGrid"></div>
@@ -1560,7 +1567,7 @@ html, body {
         </button>
         <button class="btn btn-secondary" id="setupThemeNext">Skip for now →</button>
       </div>
-      <div class="setup-step" id="setupStep4">
+      <div class="setup-step" id="setupStep5">
         <div class="setup-heading">Name your HQ! 🏠</div>
         <div class="setup-sub">What should your space be called?</div>
         <input type="text" class="setup-input" id="setupAppNameInput"
@@ -1579,21 +1586,20 @@ html, body {
 
       <div class="parent-setup-card">
         <div>
-          <span class="pin-field-label">Parent A PIN (4 digits)</span>
+          <span class="pin-field-label">Your PIN (4 digits)</span>
           <input type="number" class="setup-input pin-input" id="parentPinA"
             placeholder="••••" maxlength="4" autocomplete="off">
         </div>
         <div>
-          <span class="pin-field-label">Parent B PIN (4 digits)</span>
+          <span class="pin-field-label">Second parent PIN (optional)</span>
           <input type="number" class="setup-input pin-input" id="parentPinB"
-            placeholder="••••" maxlength="4" autocomplete="off">
+            placeholder="Leave blank if only one parent" maxlength="4" autocomplete="off">
         </div>
         <div class="pin-error-msg" id="parentPinError"></div>
         <button class="btn btn-primary btn-full" id="saveParentPinsBtn">Save PINs 🔒</button>
         <div class="parent-setup-info">
-          Both PINs are needed to change privacy settings.<br>
-          Either PIN alone can access the Parent Dashboard.<br>
-          PINs must be different from each other.
+          One PIN is enough. Add a second if two parents want separate PINs.<br>
+          Both PINs are needed to change privacy settings.
         </div>
       </div>
 
@@ -2070,7 +2076,7 @@ const AppSetup = {
   isFirstRun()          { return !Store.get('app-initialized', false); },
   markInitialized()     { Store.set('app-initialized', true); Store.set('init-date', new Date().toISOString()); },
   isProfileSetup(pid)   { return Profiles.get(pid)?.setupDone === true; },
-  parentPinsSet()       { return Auth.hasPin('parent-a') && Auth.hasPin('parent-b'); },
+  parentPinsSet()       { return Auth.hasPin('parent-a'); },  // parent-b is optional
 };
 
 /* Expose globals */
@@ -2718,7 +2724,7 @@ const AppSetup = {
   isFirstRun()          { return !Store.get('app-initialized', false); },
   markInitialized()     { Store.set('app-initialized', true); Store.set('init-date', new Date().toISOString()); },
   isProfileSetup(pid)   { return Profiles.get(pid)?.setupDone === true; },
-  parentPinsSet()       { return Auth.hasPin('parent-a') && Auth.hasPin('parent-b'); },
+  parentPinsSet()       { return Auth.hasPin('parent-a'); },  // parent-b is optional
 };
 
 /* Expose globals */
@@ -2864,18 +2870,17 @@ function handleProfileTap(profileId) {
 function enterProfile(profileId) {
   if (profileId === 'family') {
     Auth.startSession('family');
-    Toast.show('Family Space coming soon! 🏠', 'info');
+    window.location.href = 'family.html';
     return;
   }
 
   if (profileId === 'parent') {
-    // Check if parent PINs are set up
     if (!AppSetup.parentPinsSet()) {
       showScreen('ParentSetup');
       return;
     }
     Auth.startSession('parent');
-    Toast.show('Parent Dashboard coming soon! 🔒', 'info');
+    window.location.href = 'parent/parent.html';
     return;
   }
 
@@ -2957,17 +2962,20 @@ function saveParentPins() {
   const pinB = String(document.getElementById('parentPinB').value).trim();
   const errEl = document.getElementById('parentPinError');
 
-  if (pinA.length !== 4 || pinB.length !== 4) {
-    errEl.textContent = 'Both PINs must be exactly 4 digits';
+  if (pinA.length !== 4) {
+    errEl.textContent = 'Your PIN must be exactly 4 digits';
     return;
   }
-  if (pinA === pinB) {
-    errEl.textContent = 'Parent PINs must be different from each other';
+  if (pinB.length > 0 && pinB.length !== 4) {
+    errEl.textContent = 'Second PIN must be 4 digits (or leave blank)';
     return;
   }
 
   Auth.setPin('parent-a', pinA);
-  Auth.setPin('parent-b', pinB);
+  // Only set parent-b if a second PIN was provided
+  if (pinB.length === 4) {
+    Auth.setPin('parent-b', pinB);
+  }
   AppSetup.markInitialized();
   errEl.textContent = '';
 
@@ -3057,6 +3065,9 @@ function completeSetup() {
     mascot:      setupData.mascot || 'star',
     theme:       setupData.theme  || (setupProfileId === 'elder' ? 'DEFAULT_ELDER' : 'DEFAULT_YOUNGER'),
     appName,
+    dob:         setupData.dob || null,
+    age:         setupData.age || null,
+    complexity:  setupData.complexity || (setupProfileId === 'elder' ? 'full' : 'simple'),
     setupDone:   true,
   });
 
@@ -3141,17 +3152,23 @@ function loadTodayChores(profileId) {
 function buildDashGrid(profileId, complexity) {
   const grid  = document.getElementById('dashGrid');
   const tiles = [
-    { emoji:'💜', label:'Feelings',    sub:'How do you feel?',   color:'#a78bfa', href:'feelings.html',     glow:'rgba(167,139,250,0.12)' },
-    { emoji:'📚', label:'School',      sub:'Homework & stuff',   color:'#60a5fa', href:'school.html',       glow:'rgba(96,165,250,0.12)'  },
-    { emoji:'🌈', label:'Reset',       sub:'Big feelings tool',  color:'#f87171', href:'reset-toolkit.html',glow:'rgba(248,113,113,0.12)' },
-    { emoji:'⭐', label:'My Wins',     sub:'See what you did!',  color:'#fbbf24', href:'wins.html',         glow:'rgba(251,191,36,0.12)'  },
-    { emoji:'💭', label:'Thought Jar', sub:'Brain dump',         color:'#34d399', href:'thought-jar.html',  glow:'rgba(52,211,153,0.12)'  },
-    { emoji:'🌙', label:'Dreams',      sub:'Dream log',          color:'#818cf8', href:'dreams.html',       glow:'rgba(129,140,248,0.12)'  },
-    { emoji:'🌿', label:'Fireflies',   sub:'Calm-down game',      color:'#4ade80', href:'firefly.html',      glow:'rgba(74,222,128,0.12)'   },
-    { emoji:'📖', label:'Stickers',    sub:'My trophy collection',  color:'#fbbf24', href:'sticker-book.html', glow:'rgba(251,191,36,0.12)'   },
+    { emoji:'💜', label:'Feelings',    sub:'How do you feel?',    color:'#a78bfa', href:'feelings-hub.html',  glow:'rgba(167,139,250,0.12)' },
+    { emoji:'✅', label:'My Jobs',     sub:'Chores & tasks',      color:'#4ade80', href:'chores.html',        glow:'rgba(74,222,128,0.12)'  },
+    { emoji:'📚', label:'School',      sub:'Homework & stuff',    color:'#60a5fa', href:'school.html',        glow:'rgba(96,165,250,0.12)'  },
+    { emoji:'⭐', label:'My Wins',     sub:'See what you did!',   color:'#fbbf24', href:'wins.html',          glow:'rgba(251,191,36,0.12)'  },
+    { emoji:'🌈', label:'Big Feelings',sub:'Work through it',     color:'#f87171', href:'reset-toolkit.html', glow:'rgba(248,113,113,0.12)' },
+    { emoji:'🌿', label:'Calm Corner', sub:'Games & breathing',   color:'#34d399', href:'calm-corner.html',   glow:'rgba(52,211,153,0.12)'  },
+    { emoji:'📋', label:'My Routines', sub:'Morning & bedtime',   color:'#60a5fa', href:'day-plan.html',      glow:'rgba(96,165,250,0.12)'  },
+    { emoji:'🛍️', label:'Rewards',     sub:'Spend your stars',    color:'#fbbf24', href:'rewards.html',       glow:'rgba(251,191,36,0.12)'  },
+    { emoji:'🏠', label:'Family',      sub:'Shared space',        color:'#f472b6', href:'family.html',        glow:'rgba(244,114,182,0.12)' },
+    { emoji:'💭', label:'Thought Jar', sub:'Brain dump',          color:'#818cf8', href:'thought-jar.html',   glow:'rgba(129,140,248,0.12)' },
+    { emoji:'🌙', label:'Dreams',      sub:'Dream log',           color:'#818cf8', href:'dreams.html',        glow:'rgba(129,140,248,0.12)' },
+    { emoji:'🌿', label:'Fireflies',   sub:'Calm-down game',      color:'#4ade80', href:'firefly.html',       glow:'rgba(74,222,128,0.12)'  },
+    { emoji:'📖', label:'Stickers',    sub:'My trophies',         color:'#fbbf24', href:'sticker-book.html',  glow:'rgba(251,191,36,0.12)'  },
   ];
 
-  const visible = complexity === 'simple' ? tiles.slice(0, 4) : tiles;
+  // Simple mode shows core 8 tiles; full mode shows all 13
+  const visible = complexity === 'simple' ? tiles.slice(0, 8) : tiles;
   grid.innerHTML = '';
 
   visible.forEach(tile => {
@@ -3257,11 +3274,11 @@ function closeSwitchModal() {
    PLACEHOLDER HANDLERS
 ============================================================ */
 function openCheckin() {
-  Toast.show('Check-in coming soon! 💜', 'info');
+  window.location.href = 'checkin.html';
 }
 
 function openResetToolkit() {
-  Toast.show('Reset Toolkit coming soon! 🌈', 'info');
+  window.location.href = 'reset-toolkit.html';
 }
 
 /* ============================================================
@@ -3317,12 +3334,24 @@ function bindEvents() {
     if (e.key === 'Enter') document.getElementById('setupNameNext').click();
   });
 
-  document.getElementById('setupMascotNext').addEventListener('click', () => goSetupStep(3));
-  document.getElementById('setupThemeNext').addEventListener('click',  () => goSetupStep(4));
+  document.getElementById('setupBirthdayNext').addEventListener('click', () => {
+    const dob = document.getElementById('setupBirthdayInput').value;
+    if (dob) {
+      setupData.dob = dob;
+      // Auto-set complexity from age
+      const age = Math.floor((Date.now() - new Date(dob)) / (365.25 * 24 * 60 * 60 * 1000));
+      setupData.age = age;
+      setupData.complexity = age >= 9 ? 'full' : 'simple';
+    }
+    goSetupStep(3);
+  });
+  document.getElementById('setupBirthdaySkip').addEventListener('click', () => goSetupStep(3));
+  document.getElementById('setupMascotNext').addEventListener('click', () => goSetupStep(4));
+  document.getElementById('setupThemeNext').addEventListener('click',  () => goSetupStep(5));
   document.getElementById('openThemeEditorSetup').addEventListener('click', () => {
     // Open theme editor in setup context — save goes back to step 4
     ThemeEditor._setupMode = true;
-    ThemeEditor._onSetupSave = () => goSetupStep(4);
+    ThemeEditor._onSetupSave = () => goSetupStep(5);
     // Temporarily set profileId to the profile being set up
     ThemeEditor._profileId = setupProfileId;
     const profile = Profiles.get(setupProfileId);
@@ -3339,7 +3368,7 @@ function bindEvents() {
   /* --- Dashboard --- */
   document.getElementById('switchProfileBtn').addEventListener('click', openSwitchModal);
   document.getElementById('chipMood').addEventListener('click', openCheckin);
-  document.getElementById('choresSeeAll').addEventListener('click', () => Toast.show('Chores page coming soon!', 'info'));
+  document.getElementById('choresSeeAll').addEventListener('click', () => window.location.href = 'chores.html');
   document.getElementById('navHome').addEventListener('click', () => {
     const pid = Auth.getCurrentProfile();
     if (pid) loadDashboard(pid);
